@@ -107,17 +107,40 @@ $(document).ready(function () {
 
   inputs.first().focus();
 
-  inputs.each(function (index) {
+  inputs.each(function (i) {
     $(this).on('input', function (e) {
-      if (e.target.value?.length < 2 || index + 1 === inputs.length) {
+      if (e.target.value?.length < 2) {
         return;
       }
 
-      inputs[index + 1].focus();
+      const index = i + 1 === inputs.length ? 0 : i + 1;
+
+      inputs[index].focus();
     });
 
     $(this).on('focus', function () {
       this.select();
+
+      const thisInputName = $(this).attr('name');
+
+      const isGoalkeepingField =
+        fieldToSection[thisInputName].section === 'Goalkeeping';
+
+      let isAllOutfieldInputsFilled = true;
+
+      inputs.each(function () {
+        if (
+          $(this).attr('name') !== thisInputName &&
+          fieldToSection[$(this).attr('name')].section !== 'Goalkeeping' &&
+          !$(this).val()
+        ) {
+          isAllOutfieldInputsFilled = false;
+        }
+      });
+
+      if (isGoalkeepingField && isAllOutfieldInputsFilled) {
+        inputs.first().focus();
+      }
     });
   });
 });
