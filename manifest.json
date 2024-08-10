@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Sofifa DOM Manipulator",
+  "name": "Sofifa Calculator Layout",
   "version": "1",
   "description": "Reorders inputs on Sofifa calculator pages.",
   "permissions": ["activeTab"],
