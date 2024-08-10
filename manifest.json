@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Sofifa DOM Manipulator",
+  "version": "1",
+  "description": "Reorders inputs on Sofifa calculator pages.",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://sofifa.com/calculator",
+        "https://sofifa.com/player/*/*/calculator"
+      ],
+      "js": ["jquery-3.7.1.min.js", "content.js"]
+    }
+  ]
+}
