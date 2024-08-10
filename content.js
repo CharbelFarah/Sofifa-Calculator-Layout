@@ -1,3 +1,5 @@
+const getInputs = () => $('input.calc');
+
 $(document).ready(function () {
   // Define the section titles and their corresponding new IDs
   const sections = {
@@ -60,8 +62,10 @@ $(document).ready(function () {
     sectionContainers[newHeading] = $(this).parent();
   });
 
+  let inputs = getInputs();
+
   // Move inputs to their respective sections and maintain order
-  $('input.calc').each(function () {
+  inputs.each(function () {
     const inputName = $(this).attr('name');
     const sectionKey = fieldToSection[inputName];
 
@@ -98,4 +102,8 @@ $(document).ready(function () {
       });
     }
   });
+
+  inputs = getInputs();
+
+  inputs.first().focus();
 });
