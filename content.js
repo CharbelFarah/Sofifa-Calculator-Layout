@@ -10,7 +10,7 @@ $(document).ready(function () {
     Goalkeeping: 'Goalkeeping',
   };
 
-  // Mapping of input names to sections based on the new order
+  // Mapping of input names to sections and their order
   const fieldToSection = {
     sprintSpeed: { section: 'Pace', order: 1 },
     acceleration: { section: 'Pace', order: 2 },
@@ -48,26 +48,54 @@ $(document).ready(function () {
     gkPositioning: { section: 'Goalkeeping', order: 5 },
   };
 
+  const sectionContainers = {};
+  const inputsBySection = {};
+
   // Update section headings and IDs
   $('.grid.attribute.calculator > .col > h5').each(function () {
     const newHeading = sections[$(this).text()];
     $(this).text(newHeading);
     $(this).attr('id', newHeading);
+
+    sectionContainers[newHeading] = $(this).parent();
   });
 
-  // Move inputs to their respective sections
+  // Move inputs to their respective sections and maintain order
   $('input.calc').each(function () {
     const inputName = $(this).attr('name');
     const sectionKey = fieldToSection[inputName];
 
     if (sectionKey) {
       const inputParent = $(this).parent();
-      const targetSection = $(
-        `.grid.attribute.calculator > .col > h5#${sectionKey.section}`
-      ).parent();
+      const sectionId = sectionKey.section;
+      const targetSection = sectionContainers[sectionId];
 
-      // Move the input's parent element to the correct section
       targetSection.append(inputParent);
+
+      if (!inputsBySection[sectionId]) {
+        inputsBySection[sectionId] = [];
+      }
+
+      inputsBySection[sectionId].push({
+        element: inputParent,
+        order: sectionKey.order,
+      });
+    }
+  });
+
+  // Reorder inputs within each section
+  $.each(inputsBySection, function (section, inputs) {
+    // Sort inputs by their specified order
+    inputs.sort(function (a, b) {
+      return a.order - b.order;
+    });
+
+    // Append sorted inputs to the section
+    const container = sectionContainers[section];
+    if (container) {
+      inputs.forEach(function (input) {
+        container.append(input.element);
+      });
     }
   });
 });
