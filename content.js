@@ -106,4 +106,18 @@ $(document).ready(function () {
   inputs = getInputs();
 
   inputs.first().focus();
+
+  inputs.each(function (index) {
+    $(this).on('input', function (e) {
+      if (e.target.value?.length < 2 || index + 1 === inputs.length) {
+        return;
+      }
+
+      inputs[index + 1].focus();
+    });
+
+    $(this).on('focus', function () {
+      this.select();
+    });
+  });
 });
